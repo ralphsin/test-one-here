@@ -1,0 +1,90 @@
+# ==============================================================================
+# Root pyproject.toml for the Telecom CCAI Monorepo
+#
+# This file defines the DEVELOPMENT environment and tooling for the entire
+# project. It ensures all developers use the same versions of linters,
+# formatters, and testing tools.
+#
+# DO NOT add service-specific runtime dependencies here. Each service under
+# the /services/ directory will have its own pyproject.toml for its
+# own dependencies.
+# ==============================================================================
+
+[tool.poetry]
+name = "telecom-ccai-monorepo"
+version = "0.1.0"
+description = "A monorepo for the Telecom CCAI POC, containing Dialogflow CX agent definitions and fulfillment services."
+authors = ["Your Telecom Team <ccai-dev-leads@example.com>"]
+readme = "README.md"
+# This project is a workspace, not a package itself.
+packages = []
+
+[tool.poetry.dependencies]
+# The root project only specifies the Python version.
+# Runtime dependencies belong to the individual services/packages.
+python = "^3.11"
+
+
+# ==============================================================================
+# SHARED DEVELOPMENT DEPENDENCIES
+#
+# To install these, run `poetry install` from the root directory.
+# ==============================================================================
+[tool.poetry.group.dev.dependencies]
+# --- Core Tooling ---
+pytest = "^7.4.3"         # For running all unit tests
+pytest-cov = "^4.1.0"     # For generating test coverage reports
+ruff = "^0.1.8"           # Extremely fast linter and formatter
+black = "^23.11.0"        # The classic, uncompromising code formatter
+mypy = "^1.7.1"           # For static type checking
+
+# --- Google Cloud & Dialogflow Specific Tooling ---
+google-cloud-dialogflow-cx = "^1.22.0" # Python client library for DF CX
+google-agent-development-kit = "^0.2.1" # The GADK for agent management
+google-cloud-storage = "^2.14.0"      # Often needed for agent import/export
+google-api-python-client = "^2.110.0" # General Google API client
+
+
+# ==============================================================================
+# TOOL CONFIGURATION
+#
+# Centralized configuration for our development tools to ensure consistency.
+# ==============================================================================
+
+[tool.ruff]
+# Set the line length to 88 to match Black's default.
+line-length = 88
+# Select a strong set of rules:
+# E/W: pycodestyle errors and warnings
+# F: Pyflakes
+# I: isort (import sorting)
+# UP: pyupgrade (modernize Python code)
+select = ["E", "F", "W", "I", "UP"]
+
+[tool.black]
+line-length = 88
+
+[tool.pytest.ini_options]
+# Ensure developers use a compatible pytest version.
+minversion = "7.0"
+# Tell pytest where to find all the tests across the monorepo.
+testpaths = [
+    "services",
+    "packages",
+    "agents"
+]
+# Default command-line options:
+# -ra: show extra test summary info for all but passed tests
+# --cov: enable coverage reporting
+# --cov-report: specify coverage report format
+addopts = "-ra --cov=services --cov=packages --cov-report=term-missing"
+
+[tool.mypy]
+# Specify the Python version for mypy to use.
+python_version = "3.11"
+# A few good strictness settings to start with.
+warn_return_any = true
+warn_unused_configs = true
+# This is a practical setting for projects with many dependencies that may
+# not have perfect type stubs (like some gcloud libraries).
+ignore_missing_imports = true
