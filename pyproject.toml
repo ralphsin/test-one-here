@@ -1,90 +1,75 @@
 # ==============================================================================
-# Root pyproject.toml for the Telecom CCAI Monorepo
+# Root pyproject.toml for the Telecom CCAI Monorepo (using uv)
 #
-# This file defines the DEVELOPMENT environment and tooling for the entire
-# project. It ensures all developers use the same versions of linters,
-# formatters, and testing tools.
-#
-# DO NOT add service-specific runtime dependencies here. Each service under
-# the /services/ directory will have its own pyproject.toml for its
-# own dependencies.
+# This file defines the project using the standard PEP 621 `[project]` table.
+# It specifies shared development dependencies in `[project.optional-dependencies]`.
 # ==============================================================================
 
-[tool.poetry]
+[project]
 name = "telecom-ccai-monorepo"
 version = "0.1.0"
 description = "A monorepo for the Telecom CCAI POC, containing Dialogflow CX agent definitions and fulfillment services."
-authors = ["Your Telecom Team <ccai-dev-leads@example.com>"]
+authors = [
+    { name = "Your Telecom Team", email = "ccai-dev-leads@example.com" },
+]
 readme = "README.md"
-# This project is a workspace, not a package itself.
-packages = []
+# We require a modern Python version.
+requires-python = ">=3.11"
 
-[tool.poetry.dependencies]
-# The root project only specifies the Python version.
-# Runtime dependencies belong to the individual services/packages.
-python = "^3.11"
+# NOTE: The main `dependencies` array should be empty or contain only
+# packages that are truly common to EVERY single service.
+# It's better to keep this empty and define dependencies in each service's
+# own pyproject.toml file.
+dependencies = []
 
 
 # ==============================================================================
 # SHARED DEVELOPMENT DEPENDENCIES
 #
-# To install these, run `poetry install` from the root directory.
+# These are defined as an "optional dependency" group called 'dev'.
+# Install with: `uv pip install -e .[dev]`
 # ==============================================================================
-[tool.poetry.group.dev.dependencies]
-# --- Core Tooling ---
-pytest = "^7.4.3"         # For running all unit tests
-pytest-cov = "^4.1.0"     # For generating test coverage reports
-ruff = "^0.1.8"           # Extremely fast linter and formatter
-black = "^23.11.0"        # The classic, uncompromising code formatter
-mypy = "^1.7.1"           # For static type checking
+[project.optional-dependencies]
+dev = [
+    # --- Core Tooling ---
+    "pytest>=7.4.0",
+    "pytest-cov>=4.1.0",
+    "ruff>=0.1.8",
+    "black>=23.11.0",
+    "mypy>=1.7.0",
 
-# --- Google Cloud & Dialogflow Specific Tooling ---
-google-cloud-dialogflow-cx = "^1.22.0" # Python client library for DF CX
-google-agent-development-kit = "^0.2.1" # The GADK for agent management
-google-cloud-storage = "^2.14.0"      # Often needed for agent import/export
-google-api-python-client = "^2.110.0" # General Google API client
+    # --- Google Cloud & Dialogflow Specific Tooling ---
+    "google-cloud-dialogflow-cx>=1.22.0",
+    "google-agent-development-kit>=0.2.1",
+    "google-cloud-storage>=2.14.0",
+    "google-api-python-client>=2.110.0",
+]
 
 
 # ==============================================================================
 # TOOL CONFIGURATION
 #
-# Centralized configuration for our development tools to ensure consistency.
+# This section remains identical to the Poetry approach.
 # ==============================================================================
 
 [tool.ruff]
-# Set the line length to 88 to match Black's default.
 line-length = 88
-# Select a strong set of rules:
-# E/W: pycodestyle errors and warnings
-# F: Pyflakes
-# I: isort (import sorting)
-# UP: pyupgrade (modernize Python code)
 select = ["E", "F", "W", "I", "UP"]
 
 [tool.black]
 line-length = 88
 
 [tool.pytest.ini_options]
-# Ensure developers use a compatible pytest version.
 minversion = "7.0"
-# Tell pytest where to find all the tests across the monorepo.
 testpaths = [
     "services",
     "packages",
     "agents"
 ]
-# Default command-line options:
-# -ra: show extra test summary info for all but passed tests
-# --cov: enable coverage reporting
-# --cov-report: specify coverage report format
 addopts = "-ra --cov=services --cov=packages --cov-report=term-missing"
 
 [tool.mypy]
-# Specify the Python version for mypy to use.
 python_version = "3.11"
-# A few good strictness settings to start with.
 warn_return_any = true
 warn_unused_configs = true
-# This is a practical setting for projects with many dependencies that may
-# not have perfect type stubs (like some gcloud libraries).
 ignore_missing_imports = true
