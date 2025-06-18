@@ -1,0 +1,19 @@
+Metadata-Version: 2.4
+Name: telecom-ccai-monorepo
+Version: 0.1.0
+Summary: A monorepo for the Telecom CCAI POC, containing Dialogflow CX agent definitions and fulfillment services.
+Author-email: Your Telecom Team <ccai-dev-leads@example.com>
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+Provides-Extra: dev
+Requires-Dist: pytest>=7.4.0; extra == "dev"
+Requires-Dist: pytest-cov>=4.1.0; extra == "dev"
+Requires-Dist: ruff>=0.1.8; extra == "dev"
+Requires-Dist: black>=23.11.0; extra == "dev"
+Requires-Dist: mypy>=1.7.0; extra == "dev"
+Requires-Dist: google-cloud-dialogflow-cx>=1.22.0; extra == "dev"
+Requires-Dist: google-adk>=1.3.0; extra == "dev"
+Requires-Dist: google-cloud-storage>=2.14.0; extra == "dev"
+Requires-Dist: google-api-python-client>=2.110.0; extra == "dev"
+
+# test-one-here

@@ -1,0 +1,9 @@
+README.md
+pyproject.toml
+packages/shared_logging/shared_logging/__init__.py
+packages/shared_logging/shared_logging/logging.py
+packages/telecom_ccai_monorepo.egg-info/PKG-INFO
+packages/telecom_ccai_monorepo.egg-info/SOURCES.txt
+packages/telecom_ccai_monorepo.egg-info/dependency_links.txt
+packages/telecom_ccai_monorepo.egg-info/requires.txt
+packages/telecom_ccai_monorepo.egg-info/top_level.txt

@@ -1,0 +1,36 @@
+/telecom-ccai-monorepo/
+│
+├── .gitignore
+├── .python-version
+├── pyproject.toml
+├── README.md
+│
+├── agents/
+│   └── telecom_virtual_agent/               # (N) The GADK root for your entire virtual agent.
+│       ├── agent.json                       # (N) Main agent settings (e.g., name, default language).
+│       │
+│       ├── flows/                           # (N) GADK directory for all conversation flows.
+│       │   └── tech_support/                # (N) Directory for the "Tech Support" feature/flow.
+│       │       ├── tech_support.json        # (N) The definition of the Tech Support flow itself.
+│       │       │
+│       │       └── pages/                   # (N) Directory for all pages within this flow.
+│       │           └── internet_issues.json # (N) The page for handling internet issue diagnostics.
+│       │
+│       ├── intents/                         # (N) GADK directory for all intents.
+│       │   └── tech_support/                # (N) Group intents by their related flow/feature.
+│       │       └── report.internet.slow.json # (N) The specific intent for this task.
+│       │
+│       ├── entity_types/                    # (N) GADK dir. Create it even if you don't add entities yet.
+│       └── test_cases/                      # (N) GADK dir. Create it even if you don't add tests yet.
+│
+├── services/
+│   └── internet_issues/                     # (N) Directory for your backend fulfillment microservice.
+│       ├── __init__.py                      # (N) Makes the directory a Python package.
+│       ├── main.py                          # (N) The main file for your webhook logic (e.g., for Cloud Function).
+│       ├── pyproject.toml                   # (N) Defines dependencies ONLY for this service (e.g., requests).
+│       ├── test_internet_issues.py          # (N) Unit tests for your logic in main.py.
+│       └── README.md                        # (N) Documentation for what this specific service does.
+│
+├── packages/                                # (Exists) You are not touching this for your current task.
+├── scripts/                                 # (Exists) You are not touching this for your current task.
+└── cloudbuild/                              # (Exists) You are not touching this for your current task.
